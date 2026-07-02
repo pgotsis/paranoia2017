@@ -21,7 +21,7 @@ export default class mutant_power_use extends FormApplication {
         let html = "I'm activating a mutant power...";
 
         const message_data = {
-            user: game.user.id,
+            author: game.user.id,
             type: CONST.CHAT_MESSAGE_STYLES.OTHER,
             content: html,
             speaker: {
