@@ -11,6 +11,9 @@
     "authors": [
         {
             "name": "Wrycu"
+        },
+        {
+            "name": "pgotsis"
         }
     ],
     "esmodules": [
@@ -33,7 +36,7 @@
     "gridUnits": "ft",
     "primaryTokenAttribute": "resources.health",
     "secondaryTokenAttribute": "resources.power",
-    "url": "https://github.com/wrycu/paranoia2017",
-    "manifest": "https://github.com/wrycu/paranoia2017/releases/latest/download/system.json",
-    "download": "https://github.com/wrycu/paranoia2017/releases/download/1.12.0/system.zip"
+    "url": "https://github.com/pgotsis/paranoia2017",
+    "manifest": "https://github.com/pgotsis/paranoia2017/releases/latest/download/system.json",
+    "download": "https://github.com/pgotsis/paranoia2017/releases/download/1.12.0/system.zip"
 }
