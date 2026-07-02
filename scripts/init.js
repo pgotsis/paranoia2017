@@ -5,20 +5,20 @@ import {paranoia_log} from "./util.js";
  * @param buttons
  * @returns {*}
  */
-export function register_wifi_dead_zone(buttons) {
+export function register_wifi_dead_zone(controls) {
     paranoia_log("Registering Wifi Deadzone toggle");
-    buttons[0]['tools'].push({
-        name: 'wifi',
-        title: 'Toggle Wifi Deadzone',
-        icon: 'fa fa-wifi',
+    controls.tokens.tools.wifi = {
+        name: "wifi",
+        title: "Toggle Wifi Deadzone",
+        icon: "fa-solid fa-wifi",
+        order: Object.keys(controls.tokens.tools).length,
         button: true,
-        onClick: () => {
+        visible: game.user.isGM,
+        onChange: () => {
             toggle_wifi();
         },
-    });
-    console.log(buttons)
-    return buttons
-    //return [controls, html, context];
+    };
+    return controls;
 }
 
 /**

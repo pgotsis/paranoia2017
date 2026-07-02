@@ -208,7 +208,7 @@ export class initiative_manager extends FormApplication {
         );
 
         const message_data = {
-            user: game.user.id,
+            author: game.user.id,
             type: CONST.CHAT_MESSAGE_STYLES.OTHER,
             content: html,
             speaker: {
@@ -274,7 +274,7 @@ export class initiative_manager extends FormApplication {
         );
 
         const message_data = {
-            user: game.user.id,
+            author: game.user.id,
             type: CONST.CHAT_MESSAGE_STYLES.OTHER,
             content: html,
             speaker: {
@@ -344,7 +344,7 @@ export class initiative_manager extends FormApplication {
                 "systems/paranoia2017/templates/combat/initiative_challenge_incorrect.html",
             );
             const message_data = {
-                user: game.user.id,
+                author: game.user.id,
                 type: CONST.CHAT_MESSAGE_STYLES.OTHER,
                 content: html,
                 speaker: {
