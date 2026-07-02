@@ -2,7 +2,7 @@
     "id": "paranoia2017",
     "title": "Paranoia (2017)",
     "description": "Paranoia for FVTT",
-    "version": "1.13.0",
+    "version": "1.13.1",
     "compatibility": {
         "minimum": "12",
         "verified": "14",
@@ -40,5 +40,5 @@
     "secondaryTokenAttribute": "moxie",
     "url": "https://github.com/pgotsis/paranoia2017",
     "manifest": "https://raw.githubusercontent.com/pgotsis/paranoia2017/refs/heads/main/system.json",
-    "download": "https://github.com/pgotsis/paranoia2017/archive/refs/tags/1.13.0.zip"
+    "download": "https://github.com/pgotsis/paranoia2017/archive/refs/tags/1.13.1.zip"
 }
