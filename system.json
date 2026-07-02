@@ -29,7 +29,7 @@
             "path": "lang/en.json"
         }
     ],
-    "type": "module",
+    "type": "system",
     "socket": true,
     "initiative": "1d20",
     "grid": {
@@ -39,6 +39,6 @@
     "primaryTokenAttribute": "wounds",
     "secondaryTokenAttribute": "moxie",
     "url": "https://github.com/pgotsis/paranoia2017",
-    "manifest": "https://github.com/pgotsis/paranoia2017/releases/latest/download/system.json",
-    "download": "https://github.com/pgotsis/paranoia2017/releases/download/1.12.0/system.zip"
+    "manifest": "https://raw.githubusercontent.com/pgotsis/paranoia2017/refs/heads/main/system.json",
+    "download": "https://github.com/pgotsis/paranoia2017/archive/refs/tags/1.13.0.zip"
 }
