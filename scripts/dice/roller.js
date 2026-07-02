@@ -195,9 +195,10 @@ export class roll_builder extends FormApplication {
     }
 }
 
-export async function reroll(...args) {
-    let message = args[0];
-    let element = $(message.message.content);
+export async function reroll(message) {
+    const wrapper = document.createElement("div");
+    wrapper.innerHTML = message.content;
+    const element = $(wrapper);
     // check if we are the author, as only the original user can reroll
     if (!message.author.isSelf) {
         paranoia_log("quitting re-roll as I am not the author of this message");

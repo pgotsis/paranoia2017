@@ -105,32 +105,45 @@ Hooks.once("init", async function () {
     CONFIG.paranoia = paranoia;
     CONFIG.Actor.documentClass = paranoia_actor;
     CONFIG.Item.documentClass = paranoia_item;
+    CONFIG.Actor.trackableAttributes = {
+        troubleshooter: {
+            bar: ["wounds", "moxie"],
+            value: ["treason_stars", "xp_points"],
+        },
+        npc: {
+            bar: ["wounds"],
+            value: ["treason_stars", "xp_points"],
+        },
+    };
     //CONFIG.debug.hooks = true
 
     // health is the opposite of what Foundry expects
     // code is taken from the star wars engine, which does the same reversal
-    Token.prototype._drawBar = function (number, bar, data) {
+    const TokenClass = CONFIG.Token.objectClass;
+    TokenClass.prototype._drawBar = function (index, bar, data) {
         let val = Number(data.value);
         if (data.attribute === "wounds" || data.attribute === "moxie") {
             val = Number(data.max - data.value);
         }
 
         const pct = Math.clamp(val, 0, data.max) / data.max;
-        let h = Math.max(canvas.dimensions.size / 12, 8);
-        if (this.height >= 2) h *= 1.6; // Enlarge the bar for large tokens
-        // Draw the bar
-        let color = number === 0 ? [1 - pct / 2, pct, 0] : [0.5 * pct, 0.7 * pct, 0.5 + pct / 2];
-        bar
-            .clear()
+        const {width, height} = this.document.getSize();
+        const s = canvas.dimensions.uiScale;
+        const bw = width;
+        const bh = 8 * (this.document.height >= 2 ? 1.5 : 1) * s;
+        const rgb = index === 0 ? [1 - pct / 2, pct, 0] : [0.5 * pct, 0.7 * pct, 0.5 + pct / 2];
+        const color = Color.fromRGB(rgb, {float: true});
+
+        bar.clear()
+            .lineStyle(s, 0x000000, 1.0)
             .beginFill(0x000000, 0.5)
-            .lineStyle(2, 0x000000, 0.9)
-            .drawRoundedRect(0, 0, this.w, h, 3)
-            .beginFill(PIXI.utils.rgb2hex(color), 0.8)
-            .lineStyle(1, 0x000000, 0.8)
-            .drawRoundedRect(1, 1, pct * (this.w - 2), h - 2, 2);
-        // Set position
-        let posY = number === 0 ? this.h - h : 0;
+            .drawRoundedRect(0, 0, bw, bh, 3 * s)
+            .beginFill(color, 1.0)
+            .drawRoundedRect(0, 0, pct * bw, bh, 2 * s);
+
+        const posY = index === 0 ? height - bh : 0;
         bar.position.set(0, posY);
+        return true;
     };
 
     // register template helpers
@@ -148,11 +161,18 @@ Hooks.once("init", async function () {
         }[operator];
     });
 
+    const CoreItemSheet = foundry.appv1.sheets.ItemSheet;
+    const CoreActorSheet = foundry.appv1.sheets.ActorSheet;
+
     // register items
-    Items.unregisterSheet("core", ItemSheet);
+    Items.unregisterSheet("core", CoreItemSheet);
     Items.registerSheet("paranoia2017", item_sheet_v1, {makeDefault: true});
-    Actors.unregisterSheet("core", ActorSheet);
+    Actors.unregisterSheet("core", CoreActorSheet);
     Actors.registerSheet("paranoia2017", troubleshooter_sheet, {makeDefault: true});
+
+    if (CONFIG.ui?.sidebar?.TABS?.cards) {
+        CONFIG.ui.sidebar.TABS.cards.gmOnly = true;
+    }
 
     // register settings
     game.settings.register(
@@ -300,20 +320,6 @@ Hooks.once("init", async function () {
         }
     });
 
-    Hooks.on("renderSidebar", async function (sidebar, context, tabs) {
-        /*
-        Used to hide the deck tab from players.
-        They have to be owners of the decks (since they move cards around by playing them), but we don't want
-            them to be able to see which cards are in which state
-        */
-        if (!game.user.isGM) {
-            // since we have to make players owners of the card stacks for them to be able to interact with them,
-            // hide the tab, so they can't view info about it
-            $('[data-tab="cards"]', context).hide();
-        }
-        return [sidebar, context, tabs];
-    });
-
     // preload templates
     const partial_templates = [
         "systems/paranoia2017/templates/chat/item.html",
@@ -382,12 +388,14 @@ Hooks.once("ready", async function () {
         token_HUD.remove_hud(token);
     });
 
-    Hooks.on("renderChatMessage", (app, html, messageData) => {
+    Hooks.on("renderChatMessageHTML", (message, html) => {
         /*
         Used to hook the spend moxie to re-roll button
         */
-        html.on("click", ".reroll", async function () {
-            await reroll(messageData);
+        html.addEventListener("click", async (event) => {
+            if (event.target.closest(".reroll")) {
+                await reroll(message);
+            }
         });
     });
 

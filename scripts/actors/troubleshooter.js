@@ -165,7 +165,7 @@ export class troubleshooter_sheet extends ActorSheet {
         const html = await renderTemplate(template, {item_details, item});
 
         const message_data = {
-            user: game.user.id,
+            author: game.user.id,
             type: CONST.CHAT_MESSAGE_STYLES.OTHER,
             content: html,
             speaker: {
@@ -191,7 +191,7 @@ export class troubleshooter_sheet extends ActorSheet {
         const html = await renderTemplate(template, {level: $(".security_level").find(":selected").val()});
 
         const message_data = {
-            user: game.user.id,
+            author: game.user.id,
             type: CONST.CHAT_MESSAGE_STYLES.OTHER,
             content: html,
             speaker: {
@@ -238,7 +238,7 @@ export class troubleshooter_sheet extends ActorSheet {
         const html = await renderTemplate(template, {item_details, item});
 
         const message_data = {
-            user: game.user.id,
+            author: game.user.id,
             type: CONST.CHAT_MESSAGE_STYLES.OTHER,
             content: html,
             speaker: {
@@ -357,7 +357,7 @@ export class troubleshooter_sheet extends ActorSheet {
         const itemData = {
             name: name,
             type: type,
-            data: data
+            system: data
         };
         // Remove the type from the dataset since it's in the itemData.type prop.
         delete itemData.data["type"];
@@ -380,7 +380,7 @@ export async function losing_it(actor) {
     const html = await renderTemplate(template);
 
     const message_data = {
-        user: game.user.id,
+        author: game.user.id,
         type: CONST.CHAT_MESSAGE_STYLES.OTHER,
         content: html,
         speaker: {
